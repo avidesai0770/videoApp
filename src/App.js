@@ -61,7 +61,7 @@ function App() {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
       <Player playlist={data} vidieoData={selectedData} />
-      <div className="flex my-4 w-full justify-center">
+      <div className="">
         <PlayList onSlelect={handleClickPlayList} />
       </div>
     </div>

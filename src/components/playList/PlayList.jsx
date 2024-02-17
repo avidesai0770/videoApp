@@ -6,7 +6,7 @@ function PlayList(props) {
     props.onSlelect(data)
   }
   return (
-    <div className="flex flex">
+    <div className="flex">
       {data?.map((details) => {
         return (
           <div
