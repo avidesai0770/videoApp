@@ -3,6 +3,7 @@ import "./App.css"
 import Player from "./components/player/player"
 import PlayList from "./components/playList/PlayList"
 import { data } from "../src/constants/constants.js"
+
 function App() {
   // const [playlist, setPlaylist] = useState([
   //   {
