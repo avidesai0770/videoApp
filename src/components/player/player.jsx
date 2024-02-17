@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { PlayArrowSharp, Pause } from "@mui/icons-material"
 import { Fullscreen } from "@mui/icons-material"
 import { Minimize } from "@mui/icons-material"
+import "./player.css"
 
 export default function Player({ playlist, vidieoData }) {
   const videoRef = useRef(null)
@@ -11,7 +12,7 @@ export default function Player({ playlist, vidieoData }) {
   const [isFullView, setFullView] = useState(false)
   const [playbackSpeed, setPlaybackSpeed] = useState(1)
   const [volume, setVolume] = useState(0)
-  const [currentTime, setCurrentTime] = useState(0)
+  const [currentTime, setCurrentTime] = useState(10)
   const [videoIndex, setVideoIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -54,6 +55,7 @@ export default function Player({ playlist, vidieoData }) {
   }
 
   const handleSeek = (time) => {
+    console.log("t", time)
     videoRef.current.currentTime = time
     setCurrentTime(time)
   }
@@ -76,16 +78,15 @@ export default function Player({ playlist, vidieoData }) {
   const handleVideoEnd = () => {
     if (videoIndex < playlist.length - 1) {
       setVideoIndex(videoIndex + 1)
-      setIsPlaying(false)
     } else {
       setVideoIndex(0)
     }
   }
 
   return (
-    <div className=" h-full">
+    <div className="w-1/4 items-center justify-center mx-3 md:w-2/4 mainContainer">
       <div
-        className="relative w-full"
+        className="relative"
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => {
           setIsHovered(false)
@@ -97,56 +98,52 @@ export default function Player({ playlist, vidieoData }) {
           onClick={handlePlayPause}
           // onTimeUpdate={handleTimeUpdate}
           onEnded={handleVideoEnd}
-          playbackRate={playbackSpeed}></video>
-        {isHovered ? (
-          <div className="absolute bottom-0 w-full bg-white bg-opacity-30 flex flex-col sm:flex-row justify-between items-center p-2">
-            <div className="flex justify-center items-center mb-2 sm:mb-0">
-              <button onClick={handlePlayPause}>
-                {isPlaying ? <Pause color="#ffff" /> : <PlayArrowSharp />}
-              </button>
+          playbackRate={playbackSpeed}
+          height={800}
+          width={900}></video>
+        {/* {isHovered ? ( */}
+        <div className="absolute bottom-0 flex  bg-gray-400 bg-opacity-40 p-2 text-white">
+          <button onClick={handlePlayPause}>
+            {isPlaying ? <Pause color="#ffff" /> : <PlayArrowSharp />}
+          </button>
 
-              <VolumeDown color="white" />
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.1}
-                value={volume}
-                onChange={(e) => handleVolume(e.target.value)}
-              />
-              <VolumeUp />
-              <input
-                type="range"
-                min={0}
-                max={videoRef.current ? videoRef.current.duration : 0}
-                value={currentTime}
-                onChange={(e) => handleSeek(e.target.value)}
-                className="mx-2"
-              />
-              <span className="text-black">
-                {Math.floor(currentTime / 60) +
-                  ":" +
-                  Math.floor(currentTime % 60)}{" "}
-                / {Math.floor(videoRef.current ? videoRef.current.duration : 0)}
-              </span>
-            </div>
+          <VolumeDown color="white" />
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.1}
+            value={volume}
+            onChange={(e) => handleVolume(e.target.value)}
+          />
+          <VolumeUp />
+          <input
+            type="range"
+            min={0}
+            max={videoRef.current ? videoRef.current.duration : 0}
+            value={currentTime}
+            onChange={(e) => handleSeek(e.target.value)}
+            className="mx-2"
+          />
+          <span className="text-black">
+            {Math.floor(currentTime / 60) + ":" + Math.floor(currentTime % 60)}{" "}
+            / {Math.floor(videoRef.current ? videoRef.current.duration : 0)}
+          </span>
 
-            <div className="flex items-center">
-              <h4 className="mr-1">Speed</h4>
-              <select
-                value={playbackSpeed}
-                onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}>
-                <option value={0.5}>0.5x</option>
-                <option value={1}>Normal</option>
-                <option value={1.5}>1.5x</option>
-                <option value={2}>2x</option>
-              </select>
-              <button onClick={handleFullView}>
-                {isFullView ? <Minimize /> : <Fullscreen />}
-              </button>
-            </div>
-          </div>
-        ) : null}
+          <h4 className="mr-1">Speed</h4>
+          <select
+            value={playbackSpeed}
+            onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}>
+            <option value={0.5}>0.5x</option>
+            <option value={1}>Normal</option>
+            <option value={1.5}>1.5x</option>
+            <option value={2}>2x</option>
+          </select>
+          <button onClick={handleFullView}>
+            {isFullView ? <Minimize /> : <Fullscreen />}
+          </button>
+        </div>
+        {/* ) : null} */}
       </div>
     </div>
   )
