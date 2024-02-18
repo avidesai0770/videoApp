@@ -84,6 +84,11 @@ export default function Player({ playlist, vidieoData }) {
     videoRef.current.currentTime = saveTime
   }
 
+  //for converting total time into minutes:seconds
+  const durationInSeconds = videoRef.current ? videoRef.current.duration : 0
+  const durationInMinutes = Math.floor(durationInSeconds / 60)
+  const remainingSeconds = Math.floor(durationInSeconds % 60)
+
   return (
     <div className="flex flex-col">
       <div
@@ -132,8 +137,8 @@ export default function Player({ playlist, vidieoData }) {
               <span className="text-black">
                 {Math.floor(currentTime / 60) +
                   ":" +
-                  Math.floor(currentTime % 60)}{" "}
-                / {Math.floor(videoRef.current ? videoRef.current.duration : 0)}
+                  Math.floor(currentTime % 60)}
+                / {durationInMinutes + ":" + remainingSeconds}
               </span>
             </div>
             <div className="flex items-center">
