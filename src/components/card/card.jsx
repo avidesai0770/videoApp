@@ -57,19 +57,21 @@ export default function Card({ details, index, id, moveCard, onSlelect }) {
     onSlelect(data)
   }
   return (
-    <div
-      ref={ref}
-      data-handler-id={handlerId}
-      className="flex gap-2 items-center border-solid border-black border-2px my-4 mx-3"
-      key={details?.id}
-      onClick={() => {
-        hanldleSlect(details)
-      }}>
-      <video
-        className="cursor-pointer rounded-md"
-        width={100}
-        src={details?.sources}></video>
-      <div className="text-xs text-black">{details?.title}</div>
+    <div className="hover:bg-gray-500 rounded-md">
+      <div
+        ref={ref}
+        data-handler-id={handlerId}
+        className="flex gap-2 items-center border-solid border-black border-2px my-2 mx-2"
+        key={details?.id}
+        onClick={() => {
+          hanldleSlect(details)
+        }}>
+        <video
+          className="cursor-pointer rounded-md"
+          width={100}
+          src={details?.sources}></video>
+        <div className="text-xs text-black">{details?.title}</div>
+      </div>
     </div>
   )
 }

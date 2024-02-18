@@ -12,7 +12,8 @@ export default function Player({ playlist, vidieoData }) {
   const [isFullView, setFullView] = useState(false)
   const [playbackSpeed, setPlaybackSpeed] = useState(1)
   const [volume, setVolume] = useState(0)
-  const [currentTime, setCurrentTime] = useState(10)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [saveTime, SetSaveTime] = useState(0)
   const [videoIndex, setVideoIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -23,6 +24,23 @@ export default function Player({ playlist, vidieoData }) {
       videoRef.current.pause()
     }
   }, [isPlaying])
+
+  useEffect(() => {
+    const savedTime = localStorage.getItem(`video-${playlist?.sources}-time`)
+    if (savedTime) {
+      SetSaveTime(parseFloat(savedTime))
+    }
+  }, [playlist?.sources])
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      localStorage.setItem(
+        `video-${playlist?.sources}-time`,
+        currentTime.toString()
+      )
+    }, 1000)
+    return () => clearInterval(intervalId)
+  }, [playlist?.sourcesrc, currentTime])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying)
@@ -39,11 +57,7 @@ export default function Player({ playlist, vidieoData }) {
 
   const handleFullView = () => {
     if (!document.fullscreenElement) {
-      videoRef.current.requestFullscreen().catch((err) => {
-        console.log(
-          `Error attempting to enable full-screen mode: ${err.message} (${err.name})`
-        )
-      })
+      videoRef.current.requestFullscreen()
     } else {
       setFullView(false)
       document.exitFullscreen()
@@ -55,25 +69,9 @@ export default function Player({ playlist, vidieoData }) {
   }
 
   const handleSeek = (time) => {
-    console.log("t", time)
     videoRef.current.currentTime = time
-    setCurrentTime(time)
+    SetSaveTime(parseFloat(time))
   }
-
-  // function convertSecondsToMinutesAndSeconds(currentTime) {
-  //   var minutes = Math.floor(seconds / 60)
-  //   var remainingSeconds = seconds % 60
-  //   return  minutes  + remainingSeconds
-  // }
-
-  function convertionOfDurationToMinutesAndSeconds(durationInSeconds) {
-    var minutes = Math.floor(durationInSeconds / 60)
-    var seconds = Math.floor(durationInSeconds % 60)
-    return { minutes: minutes, seconds: seconds }
-  }
-
-  var durationInSeconds = videoRef.current ? videoRef.current.duration : 0
-  var timeObj = convertionOfDurationToMinutesAndSeconds(durationInSeconds)
 
   const handleVideoEnd = () => {
     if (videoIndex < playlist.length - 1) {
@@ -81,6 +79,9 @@ export default function Player({ playlist, vidieoData }) {
     } else {
       setVideoIndex(0)
     }
+  }
+  const handleCanPlay = () => {
+    videoRef.current.currentTime = saveTime
   }
 
   return (
@@ -92,60 +93,68 @@ export default function Player({ playlist, vidieoData }) {
           setIsHovered(false)
         }}>
         <video
-          onTimeUpdate={handleTimeUpdate}
           ref={videoRef}
-          src={vidieoData?.sources || playlist?.[0]?.sources}
-          onClick={handlePlayPause}
-          // onTimeUpdate={handleTimeUpdate}
+          onTimeUpdate={handleTimeUpdate}
           onEnded={handleVideoEnd}
+          onClick={handlePlayPause}
+          onPlay={handleCanPlay}
+          className="rounded-md"
+          src={vidieoData?.sources || playlist?.[0]?.sources}
+          // onTimeUpdate={handleTimeUpdate}
           playbackRate={playbackSpeed}
           height={800}
           width={900}></video>
-        {/* {isHovered ? ( */}
-        <div className="absolute bottom-0 flex bg-slate-600 bg-opacity-30  text-black">
-          <button onClick={handlePlayPause}>
-            {isPlaying ? <Pause color="#ffff" /> : <PlayArrowSharp />}
-          </button>
+        {isHovered ? (
+          <div className="absolute w-full bottom-0 flex lg:flex-row sm:flex-col justify-between bg-slate-300 bg-opacity-30 p-2  text-black">
+            <div className="flex items-center">
+              <button onClick={handlePlayPause}>
+                {isPlaying ? <Pause color="#ffff" /> : <PlayArrowSharp />}
+              </button>
 
-          <VolumeDown color="white" />
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.1}
-            value={volume}
-            onChange={(e) => handleVolume(e.target.value)}
-          />
-          <VolumeUp />
-          <input
-            type="range"
-            min={0}
-            max={videoRef.current ? videoRef.current.duration : 0}
-            value={currentTime}
-            onChange={(e) => handleSeek(e.target.value)}
-            className="mx-2"
-          />
-          <span className="text-black">
-            {Math.floor(currentTime / 60) + ":" + Math.floor(currentTime % 60)}{" "}
-            / {Math.floor(videoRef.current ? videoRef.current.duration : 0)}
-          </span>
-
-          <h4 className="mr-1">Speed</h4>
-          <select
-            value={playbackSpeed}
-            onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}>
-            <option value={0.5}>0.5x</option>
-            <option value={1}>Normal</option>
-            <option value={1.5}>1.5x</option>
-            <option value={2}>2x</option>
-          </select>
-          <button onClick={handleFullView}>
-            {isFullView ? <Minimize /> : <Fullscreen />}
-          </button>
-        </div>
-        {/* ) : null} */}
+              <VolumeDown color="white" />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.1}
+                value={volume}
+                onChange={(e) => handleVolume(e.target.value)}
+              />
+              <VolumeUp />
+              <input
+                type="range"
+                min={0}
+                max={videoRef.current ? videoRef.current.duration : 0}
+                value={currentTime}
+                onChange={(e) => handleSeek(e.target.value)}
+                className="mx-2"
+              />
+              <span className="text-black">
+                {Math.floor(currentTime / 60) +
+                  ":" +
+                  Math.floor(currentTime % 60)}{" "}
+                / {Math.floor(videoRef.current ? videoRef.current.duration : 0)}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <h4 className="mr-1">Speed</h4>
+              <select
+                value={playbackSpeed}
+                onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}>
+                <option value={0.5}>0.5x</option>
+                <option value={1}>Normal</option>
+                <option value={1.5}>1.5x</option>
+                <option value={2}>2x</option>
+              </select>
+              <button onClick={handleFullView}>
+                {isFullView ? <Minimize /> : <Fullscreen />}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
-      <h1>{vidieoData?.title}</h1>
     </div>
   )
 }

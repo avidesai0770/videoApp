@@ -30,7 +30,7 @@ function PlayList(props) {
     )
   }, [])
   return (
-    <div className="flex-container overflow-y-auto mx-3 rounded-xl">
+    <div className="flex-container overflow-auto mx-3 h-80  rounded-xl">
       {movieData?.map((details, index) => renderCard(details, index))}
     </div>
   )
