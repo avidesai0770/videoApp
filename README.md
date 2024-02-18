@@ -68,3 +68,30 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### `The functionality which are working are provided below`
+
+Play/Pause toggle.
+Seek functionality.
+Timer displaying current playback time and duration.
+Speed selector for playback speed adjustment
+Allow users to reorder videos in the playlist.
+Clicking on a video in the playlist should load and play that video in the video player
+fullscreen mode
+volume control
+application responsive
+Videos should continue playing from where users left-off
+
+### `brief overview of the project structure and any additional notes`
+
+1 in project i had created a constant and pass the constant in every components using props
+2 used usestate to state manage
+3 on clicking anywhere on player video will start
+4 drag and drop is working i had used other librabry for DnD
+5 on clicking on a playlist video, video is getting render
+
+### `lighthouse score / performance`
+
+link :- [https://googlechrome.github.io/lighthouse/viewer/?gist=2e58ed4dc53417baed7f5dd7e9c0e0e1]
+:- sharing the json file through a mail
+Performance: 100 Accessibility: 100 Best Practices: 73 SEO: 100
