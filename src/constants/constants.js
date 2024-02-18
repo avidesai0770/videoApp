@@ -43,5 +43,27 @@ let data = [
     thumb: "images/ForBiggerJoyrides.jpg",
     title: "For Bigger Joyrides",
   },
+  {
+    id: "5",
+    description:
+      "The Smoking Tire is going on the 2010 Bullrun Live Rally in a 2011 Shelby GT500, and posting a video from the road every single day! The only place to watch them is by subscribing to The Smoking Tire or watching at BlackMagicShine.com",
+    sources: [
+      "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+    ],
+    subtitle: "By Garage419",
+    thumb: "images/WeAreGoingOnBullrun.jpg",
+    title: "We Are Going On Bullrun",
+  },
+  {
+    id: "6",
+    description:
+      "The Smoking Tire meets up with Chris and Jorge from CarsForAGrand.com to see just how far $1,000 can go when looking for a car.The Smoking Tire meets up with Chris and Jorge from CarsForAGrand.com to see just how far $1,000 can go when looking for a car.",
+    sources: [
+      "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
+    ],
+    subtitle: "By Garage419",
+    thumb: "images/WhatCarCanYouGetForAGrand.jpg",
+    title: "What care can you get for a grand?",
+  },
 ]
 export { data }
