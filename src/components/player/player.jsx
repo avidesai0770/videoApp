@@ -84,9 +84,9 @@ export default function Player({ playlist, vidieoData }) {
   }
 
   return (
-    <div className="w-1/4 items-center justify-center mx-3 md:w-2/4 mainContainer">
+    <div className="flex flex-col">
       <div
-        className="relative"
+        className="relative block"
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => {
           setIsHovered(false)
@@ -102,7 +102,7 @@ export default function Player({ playlist, vidieoData }) {
           height={800}
           width={900}></video>
         {/* {isHovered ? ( */}
-        <div className="absolute bottom-0 flex  bg-gray-400 bg-opacity-40 p-2 text-white">
+        <div className="absolute bottom-0 flex bg-slate-600 bg-opacity-30  text-black">
           <button onClick={handlePlayPause}>
             {isPlaying ? <Pause color="#ffff" /> : <PlayArrowSharp />}
           </button>
@@ -145,6 +145,7 @@ export default function Player({ playlist, vidieoData }) {
         </div>
         {/* ) : null} */}
       </div>
+      <h1>{vidieoData?.title}</h1>
     </div>
   )
 }
